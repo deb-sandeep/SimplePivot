@@ -35,6 +35,7 @@ function test() {
 </script>
 
 ```
+![Screenshot](/ext/screenshot.png?raw=true)
 
 ### Rationale of YAL (Yet Another Library)
 With more functional pivoting libraries already available, what was the itch to make a less functional one?
