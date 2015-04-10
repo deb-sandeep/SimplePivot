@@ -1,0 +1,31 @@
+<html>
+ <head>
+     <link rel="stylesheet" type="text/css" href="ext/lib/treetable/jquery.treetable.css">
+     <link rel="stylesheet" type="text/css" href="ext/lib/treetable/jquery.treetable.theme.css">
+
+     <script src="ext/lib/jquery/jquery-2.1.1.min.js"></script>
+     <script src="ext/lib/treetable/jquery.treetable.js"></script>
+     <script src="simple_pivot.js"></script>
+     
+     <script>
+     function test() {
+
+         var srcColNames = [ "Date", "Subject", "Lesson", "Time" ] ;
+         var pivotData = [
+             [ "10-26", "History",   "Mughals", 300 ],
+             [ "10-26", "History",   "Islam",   200 ],
+             [ "10-27", "Geography", "Climate", 150 ],
+             [ "10-27", "History",   "Islam",   250 ]
+         ] ;
+         var pivotTable = new PivotTable() ;
+         pivotTable.setPivotData( srcColNames, pivotData ) ;
+
+         pivotTable.initializePivotTable( [ "Subject", "Lesson" ], "Date", "Time" ) ;
+         pivotTable.renderPivotTable( "pivot_table_div", "Time spent per subject" ) ;
+     }
+     </script>
+ </head>
+ <body onload="test()">
+     <div id="pivot_table_div"></div>
+ </body>
+</html>

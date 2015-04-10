@@ -1,0 +1,77 @@
+<html>
+    <head>
+    <link rel="stylesheet" type="text/css" href="ext/lib/treetable/jquery.treetable.css">
+    <link rel="stylesheet" type="text/css" href="ext/lib/treetable/jquery.treetable.theme.css">
+
+    <script src="ext/lib/jquery/jquery-2.1.1.min.js"></script>
+    <script src="ext/lib/treetable/jquery.treetable.js"></script>
+    <script src="simple_pivot.js"></script>
+    <script src="ext/data/large_data.js"></script>
+     
+    <script>
+    var srcColNames = [ "Date", "Subject", "Lesson", "Time" ] ;
+    var pivotTable  = new PivotTable() ;
+
+    pivotTable.setPivotData( srcColNames, pivotData ) ;
+
+    function renderHelperCallback( rowIndex, colIndex, cellData ) {
+
+        var formattedValue = "" ;
+        if( cellData != null ) {
+
+            if( rowIndex > 0 && colIndex > 0 ) { 
+
+                var val     = parseInt( cellData ) ;
+                var hours   = Math.floor( val / 3600 ) ;
+                var minutes = Math.floor( ( val - (3600*hours) ) / 60 ) ;
+                var seconds = Math.floor( val - ( (hours*3600) + (minutes*60) ) ) ;
+
+                if( hours == 0 ) { hours = "" ; }
+                else if( hours < 10 ) { hours = "0" + hours + ":" ; }
+                else { hours = hours + ":" ; }
+
+                if( minutes < 10 ) { 
+                    minutes = "0" + minutes ; 
+                }
+                if( seconds < 10 ) { 
+                    seconds = "0" + seconds ; 
+                }
+
+                formattedValue = hours + minutes + ":" + seconds ;
+            }
+            else {
+                formattedValue = cellData ;
+            }
+        }
+        return formattedValue ;
+    }
+
+    function generateReportOfTimeSpentPerSubject() {
+
+        pivotTable.initializePivotTable( [ "Subject", "Lesson" ], "Subject", "Time" ) ;
+        pivotTable.renderPivotTable( "pivot_table_div", 
+                                     "Time spent per subject", 
+                                     renderHelperCallback, true ) ;
+    }
+
+    function generateReportOfStudyTimePerDayPerSubject() {
+
+        pivotTable.initializePivotTable( [ "Date", "Subject", "Lesson" ], "Subject", "Time" ) ;
+        pivotTable.renderPivotTable( "pivot_table_div", 
+                                     "Study time per Subject per Day",
+                                     renderHelperCallback, false ) ;
+    }
+    </script>
+    </head>
+    <body onload="generateReportOfTimeSpentPerSubject();">
+        <center><h1>Study Report</h1>
+        <button class="myButton" onclick="generateReportOfTimeSpentPerSubject()">
+            Time spent per Subject
+        </button>
+        <button class="myButton" onclick="generateReportOfStudyTimePerDayPerSubject()">
+            Time spent per Day and Subject
+        </button>
+        </center>
+        <center><div id="pivot_table_div"></div></center>
+    </body>
+</html>
