@@ -352,6 +352,8 @@ function PivotTable() {
     this.dataGrid     = null ;
     this.parentRowIds = null ;
 
+    this.pivotTableId = null ;
+
     this.setPivotData = function( colNames, pivotData ) {
 
         this.colNames = colNames ;
@@ -404,6 +406,20 @@ function PivotTable() {
 
         if( expandAll ) {
             $( "#" + tableId ).treetable( "expandAll" ) ;
+        }
+
+        this.pivotTableId = tableId ;
+    }
+
+    this.expandFirstRow = function() {
+        if( this.dataGrid.length > 2 ) {
+            $( "#" + this.pivotTableId ).treetable( "expandNode", "2" ) ;
+            var nodes = $( "#" + this.pivotTableId ).find( "[data-tt-parent-id='2']" ) ;
+            for( var i=0; i<nodes.length; i++ ) {
+                var node = nodes[i] ;
+                $( "#" + this.pivotTableId ).treetable( "expandNode", 
+                               nodes[i].attributes[ "data-tt-id" ].nodeValue ) ;
+            }
         }
     }
 
